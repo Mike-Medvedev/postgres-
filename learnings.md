@@ -20,3 +20,12 @@
 - postgres stores all postgres related stuff in a folder called PGDATA
 - PGDATA contains things like postgres conf to hold configurations, a base folder that holds the database files, and things like write ahead logs
 
+## Chapter 3
+
+- In Postgresql users and groups are categorized as roles.
+- roles permit users/groups certain actions such as creating tables, objects, or even creating roles
+- to permit users to connect to a db they must be authorized to do so via a role
+- CREATE ROLE creates a role and futher options can configure the type of role
+- a role can be a single users or a group of users, they are both called a role
+- the db allows incoming connections for a host-based access firewall called hba
+- pg_hba.conf shows these rules, which can be queried with pg_hba_file_rules
