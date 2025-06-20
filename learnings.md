@@ -57,3 +57,38 @@
 - you can update data with UPDATE tablename SET columnname = 0 WHERE name = 'fred';
 - you can delete data with DELETE FROM tablename WHERE columnname = 'fred'
 - if you dont want to specify row(s) you can use truncate which is also way faster than deleting, but it deletes the whole table, TRUNCATE TABLE;
+
+## Chapter 5 Advanced Statements
+
+- you can filter select statements with the where clause and coniditons like > or <
+- the LIKE clause can search for similiar words like select \* from table where title LIKE "%data% which will find all titles with the word data in there
+- use ILIKE for case insensitive searches instead of using upper()
+- the DISTINCT command will filter out all duplicates of the column(s), so SELECT DISTINCT title from table, will only return rows with unique title's ommiting any with duplicate title
+- DISTINCT works on combinations for columns too like SELECT DISTINCT title,name
+- the COALESCE function coalesce() takes two parameters and returns the one that is not null.
+  so you can do select coalesce(title, 'No Title') from tables and it will return the title if true or if title is null return 'No Title' or whatever value you pass in
+- you should alias coalesce because the result set will contain the column name coalesce, so coalesce(title, 'Null Title') as title.
+- the LIMIT and OFFSET keywords will limit the rows returned in a query and the offset controls which row to start at, which helps with pagination.
+- for example select \* from table LIMIT 50, OFFSET 20 will return 50 records starting from the 20th record
+- SUBQUERIES are queries that can be run inside a query, they are very powerful but hinder performance and JOINING is preferred where possible
+- you can subquery with IN/NOT IN keywords such as: SELECT user_id FROM users where name IN ('mike', 'paul')
+- the parentheses will contain the subquery, instead of ('mike', 'paul') you can do
+  SELECT student_id FROM students WHERE student_name NOT IN (select \* from class_a_students)
+- EXISTS/NOT EXISTS are keywords to evaluate if a subquery is true or false, for example select id, name from users where exists(select user_id from posts where posts.user_id = users.id )
+- a join in sql combines tables together to form a result set
+- select users._, posts._ from users, posts is a CROSS-JOIN and returns a cartesian product of
+  both tables such that there exists every combination of rows from users and posts, so for the first user record there is every post record
+- INNER JOINS join tables on a common value for example, select users._, posts._ from users JOIN posts ON posts.user_id = users.id. -> the resulting rows are such that each row contains a users.id value that equals a posts.user_id value in that row.
+- Another way to think of INNER JOINS is two overlapping circle creating a venn diagram, the overlap is the result of an INNER JOIN
+- LEFT JOINS return the same result as an INNER JOIN + the rest of the records of the LEFT table even if they dont have a common value with the RIGHT Table, so if you wanted to get all the users that have not written a post, you can join users with posts and left join to view all users and with and without posts and filter that result by users where posts are null.
+- SELECT users._, posts._ from users LEFT JOIN posts on posts.user_id = users.id where posts.user_id IS NULL
+- if you just used an inner join then you would never get null posts because inner join only returns the rows with common values
+
+- A right join is the twin of a left join, it returns the right tables records as well as common values with the left
+
+- A FULL OUTER JOIN combines both tables but its not a CROSS-JOIN, it just returns all records of both tables as well as their common values, but not every combination like a cross join, just left table records, right table records, and the records that share a common value deduped.
+
+- A LATERAL JOIN allows you to join a table with the result of a subquery,
+  select users._, q._ from users LATERAL JOIN (select posts.\* from posts where posts.user_id = users.id AND posts.likes > 2) as q on true;
+- this will join users table with the result of the subquery, so we can see all the users who have posts with likes greater than 2 for each post.
+- ths query runs for each row of users, so it checks for each user records, if the result of the subquery satisfies him. So if theres a user MIKE, then for MIKE check if any posts have the same user_id as mike.id and if for that post the like > 2
