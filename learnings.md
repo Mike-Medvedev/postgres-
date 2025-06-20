@@ -29,3 +29,31 @@
 - a role can be a single users or a group of users, they are both called a role
 - the db allows incoming connections for a host-based access firewall called hba
 - pg_hba.conf shows these rules, which can be queried with pg_hba_file_rules
+
+## Chapter 4 Basic Statements
+
+- Basic SQL syntax allows you to write DDL (Data Definition Language) and DML (Data Manipulation Language) commands
+- Creating a database in sql can be done with Create database databasename and drop database databasename.
+- database are directories stored within the pgdata directory. the databases can be viewed with select \* from pg_database;
+- each object like a database or table has a OID (object id) and when created, gets created as a directory/file in PGDATA on the filesystem
+- so a database with OID 16400 that contains a table with a OID of 16307 can be found at /Library/PostgreSQL/16/data/base/16400/16307 where
+  the database is the directory named 16400 and the table is the file named 16307 and its contents is binary containing all the data of each row
+- the actual structure such as columns of a table are contained in the postgres catalog in a different table containing information about other tables,
+  its got its own OID as well as its also a table and object
+- Schemas represent a namespace for organizing objects such as tables and views and can be created with CREATE SCHEMA myschema;
+- normal users by default cant make new schema and tables so they must be granted permission in the schema like CREATE SCHEMA myschema authorization username;
+- There are 3 types of tables in PostgreSQL, temp tables, unlogged tables, logged tables
+- Creating a table can be created via CREATE TABLE tablename (columns...) and GENERATED AS IDENTITY auto assigned a unique value to a column;
+- Create table can be skipped if it already exists with IF EXISTS, CREATE TABLE IF NOT EXISTS USERS; for example
+- temp tables only exist during a transaction
+- There are common DML SQL statments to manipulate data. Select Insert Update and Delete
+- to insert data users can write INSERT INTO "tablename" (column1, column2) values (data1, data2);
+- you can insert multiple records by passing multiple tuples INSERT INTO "tablename" (column1, column2) values (data1, data2), (data1, data2);
+- to select data users can write SELECT \* FROM TABLENAME
+- you can select specific records based on a column with the WHERE clause. Select \* from table where id = 5;
+- you can order the results of a select with ORDER BY, select \* from table ORDER BY columnname ASC; (ascending)
+- Missing data is expressed as a NULL value, and you can order by columname NULLS FIRST; to sort by nulls first
+- You can add null checks such as SELECT \* FROM tablename where columname IS NULL;
+- you can update data with UPDATE tablename SET columnname = 0 WHERE name = 'fred';
+- you can delete data with DELETE FROM tablename WHERE columnname = 'fred'
+- if you dont want to specify row(s) you can use truncate which is also way faster than deleting, but it deletes the whole table, TRUNCATE TABLE;
