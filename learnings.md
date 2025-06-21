@@ -92,3 +92,12 @@
   select users._, q._ from users LATERAL JOIN (select posts.\* from posts where posts.user_id = users.id AND posts.likes > 2) as q on true;
 - this will join users table with the result of the subquery, so we can see all the users who have posts with likes greater than 2 for each post.
 - ths query runs for each row of users, so it checks for each user records, if the result of the subquery satisfies him. So if theres a user MIKE, then for MIKE check if any posts have the same user_id as mike.id and if for that post the like > 2
+- this is useful because we can get the values in the subquery, in the main query with q
+
+- Upsert in postgreSQL means inserting a record, and updating if theres a conflict.
+- in postgres you can do insert into table (column) values (data) ON CONFLICT DO UPDATE set column = 'some data';
+
+- RETURNING allows you to return the values from columns in an insert, update, or delete. delete from table where id = 5 returning \*; this will return the row that was deleted
+- You can MERGE to do a bulk update of properties by merging a table into another table and cherry picking which values to update
+- CTE's are Common Table Expressions, they are temporary queries you can use in a statement and only exists for the lifetime of the query
+- WITH customers as (select _ from customers_1 union select _ from customers_2) select id from customers where name = 'kent';
