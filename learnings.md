@@ -101,3 +101,18 @@
 - You can MERGE to do a bulk update of properties by merging a table into another table and cherry picking which values to update
 - CTE's are Common Table Expressions, they are temporary queries you can use in a statement and only exists for the lifetime of the query
 - WITH customers as (select _ from customers_1 union select _ from customers_2) select id from customers where name = 'kent';
+
+## Chapter 5 (PostgreSQL Tutorial on Constraints and Columns)
+
+- When defining a column in a table, and Identity column is a special column, to give it an autoincrement sequence you can to GENERATED ALWAYS AS IDENTITY;
+- You can make computed columns rely on another column by doing GENERATED ALWAYS AS (other_column \* 2)
+- Constraints give you fine-grained control over what data is entered into Columns and Tables, since a data type is not enough of a restriction.
+- CHECK Constraint is a constraint that evaluates a boolean expression on a column or table. EXAMPLE: price int CHECK (price > 0) will restrict negative prices on the price column
+- You can add a CHECK constraint on a table by doing CHECK (price > 0) or to name it you can do CONSTRAINT positive_numbers CHECK (price > 0)
+- NOT NULL is a constraint that ensures a column is NOT NULL
+- UNIQUE constraint ensures theres only one row that contains that value
+- UNIQUE constraints also works for composites like, column_1 integer, column_2 integer, CONSTRAINT unique_pair UNIQUE (column_1, column_2)
+- PRIMARY KEY constraint applies UNIQUE NOT NULL and also tables can only have one PRIMARY KEY, for referential integrity so foreign keys can reference it
+- FOREIGN KEY constraint means the values of this column must shadow a value in the referenced table, so if a table has id int PRIMARY KEY, then table_2 needs CONSTRAINT fk_id FOREIGN KEY (some_id) REFERENCES table(id)
+- ON DELETE is part of foreign keys and provide options for handling deletions that have references. IF the referenced table deletes a row, the referencing table will delete its rows with the corresponding foreign keys if ON DELETE CASCADE is present on that constraint
+- ON DELETE RESTRICT disallows the deletion of a row in the referenced table if the referencing row has foreign keys depending on it
