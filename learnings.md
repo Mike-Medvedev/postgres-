@@ -116,3 +116,16 @@
 - FOREIGN KEY constraint means the values of this column must shadow a value in the referenced table, so if a table has id int PRIMARY KEY, then table_2 needs CONSTRAINT fk_id FOREIGN KEY (some_id) REFERENCES table(id)
 - ON DELETE is part of foreign keys and provide options for handling deletions that have references. IF the referenced table deletes a row, the referencing table will delete its rows with the corresponding foreign keys if ON DELETE CASCADE is present on that constraint
 - ON DELETE RESTRICT disallows the deletion of a row in the referenced table if the referencing row has foreign keys depending on it
+
+## Chapter 8 (Transactions)
+
+- A transaction is an atomic unit of work and can be single or mulitple statements of SQL
+- Every statement is an implicit transaction which the postgresql engine handles itself which automatically applies changes or rollsback changes if theres an error
+- An explicit transaction can be done with BEGIN statment and end it with COMMIT or ROLLBACK statements
+- each transaction is given a txid which is the transaction identifier. Commit permanently saves changes and roll back drops them
+- if theres like a syntax error or anything bad happening in a transaction, the transaction will roll back and nothing is saved
+- MVCC is the concurrency in postgresql and is a mechanism in place to handle conflicting updates
+- for example when an update is made to a tuple, it actually makes a copy and negates the old tuple, any other concurrent transaction does the same thing
+- then the conflicting transactions will enter a DEADLOCK and the second transaction will wait for the first to complete
+
+## Chatper
