@@ -128,4 +128,9 @@
 - for example when an update is made to a tuple, it actually makes a copy and negates the old tuple, any other concurrent transaction does the same thing
 - then the conflicting transactions will enter a DEADLOCK and the second transaction will wait for the first to complete
 
-## Chatper
+## Chapter 13 (Performance Optimizations)
+
+- Index improve performance by helping the postgres engine search through records
+- Placing an index on a column creates an Index File in the directory that contains a sorted b-tree(default) of the records in the column, making the lookup way faster
+- Creating index's can increase write speed because everytime you add a new record, all the index files have to resort themselved
+- Usually Index's should be used on frequently queried columns to improve speed
